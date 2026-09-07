@@ -21,11 +21,24 @@ jobs:
         with:
           node-version: 22
 
-      - name: Instalar dependências
+      - name: Preparar configuração Capacitor
         working-directory: app
         run: |
-          npm install
-          npm install --save-dev typescript
+          rm -f capacitor.config.ts
+          cat > capacitor.config.json <<'EOF'
+          {
+            "appId": "com.gdc.transportes",
+            "appName": "GDC Transportes",
+            "webDir": "www",
+            "android": {
+              "allowMixedContent": true
+            }
+          }
+          EOF
+
+      - name: Instalar dependências
+        working-directory: app
+        run: npm install
 
       - name: Criar projeto Android
         working-directory: app
